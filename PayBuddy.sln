@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayBuddy", "PayBuddy\PayBuddy.csproj", "{9BEF197C-E16E-4D05-BACF-C7A27C289E8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{5BC86FCC-80A3-4473-A5A3-B8B1A31B2542}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9BEF197C-E16E-4D05-BACF-C7A27C289E8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BEF197C-E16E-4D05-BACF-C7A27C289E8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BEF197C-E16E-4D05-BACF-C7A27C289E8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BC86FCC-80A3-4473-A5A3-B8B1A31B2542}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BC86FCC-80A3-4473-A5A3-B8B1A31B2542}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BC86FCC-80A3-4473-A5A3-B8B1A31B2542}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BC86FCC-80A3-4473-A5A3-B8B1A31B2542}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
