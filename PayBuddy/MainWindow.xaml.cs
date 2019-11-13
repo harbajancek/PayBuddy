@@ -22,55 +22,75 @@ namespace PayBuddy
     {
         public MainWindow()
         {
-            List<TestClass> tests = new List<TestClass>()
+            var user = new TestUserClass()
             {
-                new TestClass()
-                {
-                    Title = "kino",
-                    Amount = "199 Kč",
-                    Description = "do kina",
-                    Name = "Pepa"
-                },
-                new TestClass()
-                {
-                    Title = "kino",
-                    Amount = "199 Kč",
-                    Description = "do kina",
-                    Name = "Pepa"
-                },
-                new TestClass()
-                {
-                    Title = "kino",
-                    Amount = "199 Kč",
-                    Description = "do kina",
-                    Name = "Pepa"
-                },
-                new TestClass()
-                {
-                    Title = "kino",
-                    Amount = "199 Kč",
-                    Description = "do kina",
-                    Name = "Pepa"
-                },
-                new TestClass()
-                {
-                    Title = "kino",
-                    Amount = "199 Kč",
-                    Description = "do kina",
-                    Name = "Pepa"
-                },
-                new TestClass()
-                {
-                    Title = "kino",
-                    Amount = "199 Kč",
-                    Description = "do kina",
-                    Name = "Pepa"
-                }
+                Nick = "Tom"
             };
-
+            List<TestPayClass> testPays = new List<TestPayClass>()
+            {
+                new TestPayClass()
+                {
+                    Master = user,
+                    Title = "title",
+                    Amount = 100,
+                    Description = "descdesc"
+                },
+                new TestPayClass()
+                {
+                    Master = user,
+                    Title = "title",
+                    Amount = 100,
+                    Description = "descdesc"
+                },
+                new TestPayClass()
+                {
+                    Master = user,
+                    Title = "title",
+                    Amount = 100,
+                    Description = "descdesc"
+                },
+                new TestPayClass()
+                {
+                    Master = user,
+                    Title = "title",
+                    Amount = 100,
+                    Description = "descdesc"
+                },
+                new TestPayClass()
+                {
+                    Master = user,
+                    Title = "title",
+                    Amount = 100,
+                    Description = "descdesc"
+                },
+            };
+            List<TestUserClass> testUsers = new List<TestUserClass>()
+            {
+                new TestUserClass()
+                {
+                    Nick = "pepa"
+                },
+                new TestUserClass()
+                {
+                    Nick = "pepa"
+                },
+                new TestUserClass()
+                {
+                    Nick = "pepa"
+                },
+                new TestUserClass()
+                {
+                    Nick = "pepa"
+                },
+                new TestUserClass()
+                {
+                    Nick = "pepa"
+                },
+            };
             InitializeComponent();
 
-            Payments.ItemsSource = tests;
+            Friends.ItemsSource = testUsers;
+            Payments.ItemsSource = testPays;
         }
     }
 }

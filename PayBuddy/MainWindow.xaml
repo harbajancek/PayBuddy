@@ -6,63 +6,127 @@
         xmlns:local="clr-namespace:PayBuddy"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+    </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
+        <Grid x:Name="LoginView" Grid.ColumnSpan="3" Visibility="Hidden" Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="MinWidth" Value="200"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="Padding" Value="5"/>
+                </Style>
+            </Grid.Resources>
             <StackPanel>
-                <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
-                <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
-                <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
-                <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
-                <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
+                <Label Content="Email"/>
+                <TextBox/>
+                <Label Content="Nick"/>
+                <TextBox/>
+                <Label Content="Password"/>
+                <TextBox/>
+                <Button Content="Register"/>
             </StackPanel>
-        </Border>
-        <Border Grid.Column="1" BorderThickness="1" BorderBrush="Black">
-            <ScrollViewer>
-                <ItemsControl Name="Payments">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="Black" BorderThickness="1">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25"/>
-                                        <RowDefinition MinHeight="50"/>
-                                        <RowDefinition Height="40"/>
-                                    </Grid.RowDefinitions>
-                                    <Label Grid.Column="0" Grid.Row="0" Content="{Binding Title}"/>
-                                    <Label Grid.Column="1" Grid.Row="0" Content="{Binding Name}" HorizontalAlignment="Center"/>
-                                    <Label Grid.Column="2" Grid.Row="0" Content="{Binding Amount}" HorizontalAlignment="Right"/>
-                                    <TextBlock Padding="7" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Text="{Binding Description}" TextWrapping="Wrap"/>
-                                    <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                        <Button Margin="0 0 5 0" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" Content="no" Height="auto" Width="50" BorderBrush="Red" Background="Red"/>
-                                        <Button Margin="0 0 5 0" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" Content="yes" Height="auto" Width="50" BorderBrush="LimeGreen" Background="LimeGreen"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    
-                </ItemsControl>
+            <Separator Grid.RowSpan="2" VerticalAlignment="Center"/>
+            <StackPanel Grid.Row="1">
+                <Label Content="Email"/>
+                <TextBox/>
+                <Label Content="Password"/>
+                <TextBox/>
+                <Button Content="Login"/>
+            </StackPanel>
+        </Grid>
+        <Grid x:Name="MainView" Visibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
+                <StackPanel>
+                    <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
+                    <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
+                    <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
+                    <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
+                    <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" BorderThickness="1" BorderBrush="Black">
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="Payments"/>
+                        <ItemsControl Grid.Row="1" Name="Payments">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Black" BorderThickness="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="25"/>
+                                                <RowDefinition MinHeight="50"/>
+                                                <RowDefinition Height="40"/>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Title}"/>
+                                            <Label Grid.Column="1" Grid.Row="0" Content="{Binding Master.Nick}" HorizontalAlignment="Center"/>
+                                            <Label Grid.Column="2" Grid.Row="0" Content="{Binding Amount}" HorizontalAlignment="Right"/>
+                                            <TextBlock Padding="7" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Text="{Binding Description}" TextWrapping="Wrap"/>
+                                            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Button Margin="0 0 5 0" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" Content="no" Height="auto" Width="50" BorderBrush="Red" Background="Red"/>
+                                                <Button Margin="0 0 5 0" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" Content="yes" Height="auto" Width="50" BorderBrush="LimeGreen" Background="LimeGreen"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </ScrollViewer>
+            </Border>
+            <Border Grid.Column="2" BorderThickness="1" BorderBrush="Black">
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="Friends"/>
+                        <ItemsControl Grid.Row="1" Name="Friends">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Black" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{Binding Nick}"/>
+                                            <Label Content="{Binding Email}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </ScrollViewer>
                 
-            </ScrollViewer>
-        </Border>
-        <Border Grid.Column="2" BorderThickness="1" BorderBrush="Black">
-            <!--
-            <ItemsControl Name="Friends">
-                <ItemsControl.ItemTemplate>
-                    
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            -->
-        </Border>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
