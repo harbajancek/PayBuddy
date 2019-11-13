@@ -22,7 +22,55 @@ namespace PayBuddy
     {
         public MainWindow()
         {
+            List<TestClass> tests = new List<TestClass>()
+            {
+                new TestClass()
+                {
+                    Title = "kino",
+                    Amount = "199 Kč",
+                    Description = "do kina",
+                    Name = "Pepa"
+                },
+                new TestClass()
+                {
+                    Title = "kino",
+                    Amount = "199 Kč",
+                    Description = "do kina",
+                    Name = "Pepa"
+                },
+                new TestClass()
+                {
+                    Title = "kino",
+                    Amount = "199 Kč",
+                    Description = "do kina",
+                    Name = "Pepa"
+                },
+                new TestClass()
+                {
+                    Title = "kino",
+                    Amount = "199 Kč",
+                    Description = "do kina",
+                    Name = "Pepa"
+                },
+                new TestClass()
+                {
+                    Title = "kino",
+                    Amount = "199 Kč",
+                    Description = "do kina",
+                    Name = "Pepa"
+                },
+                new TestClass()
+                {
+                    Title = "kino",
+                    Amount = "199 Kč",
+                    Description = "do kina",
+                    Name = "Pepa"
+                }
+            };
+
             InitializeComponent();
+
+            Payments.ItemsSource = tests;
         }
     }
 }
