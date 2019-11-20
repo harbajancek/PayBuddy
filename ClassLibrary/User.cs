@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    class User
+    public class User
     {
         public string Id { get; }
         public string Nick { get; }
