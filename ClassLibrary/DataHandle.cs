@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class DataHandle
+    public static class DataHandle
     {
         static HttpClient client = new HttpClient();
-        static string urlAddress = "https://hynekma16.sps-prosek.cz/PayMeThot/";
-
+        static string urlAddress = "https://hynekma16.sps-prosek.cz/PayBuddy/index.php";
+        public static void GerUser(int id,string nick,string email,string password)
+        {
+            string urlToUse = urlAddress + "?action=show";
+            if()
+        }
 
         
     }
