@@ -24,10 +24,10 @@ namespace ClassLibrary
             text = text.Substring(2);
 
 
-            if (Response.StatusCode == HttpStatusCode.OK)
+            if (Response.StatusCode == HttpStatusCode.OK && text != "")
             {
               
-
+                
                 var m = JsonConvert.DeserializeObject<List<PayBuddy_user>>(text)[0];
 
                 User loggedUser = new User(id:int.Parse(m.id), nick:m.nick,email:m.email);
