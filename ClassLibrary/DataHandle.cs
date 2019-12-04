@@ -17,28 +17,28 @@ namespace ClassLibrary
         {
             string request = urlAddress + $"?action=show&type=PayBuddy_user&email={email}&password={password}";
             string response = await RequestApi(request);
-            ///////////////////////////////////////
+           
 
-            HttpResponseMessage uff = await client.GetAsync(request);
-            string text = await uff.Content.ReadAsStringAsync();
+            HttpResponseMessage Response = await client.GetAsync(request);
+            string text = await Response.Content.ReadAsStringAsync();
             text = text.Substring(2);
 
 
-            if (uff.StatusCode == HttpStatusCode.OK)
+            if (Response.StatusCode == HttpStatusCode.OK)
             {
-                var m = JsonConvert.DeserializeObject<PayBuddy_user>(text);
+              
 
-                User loggedUser = new User()
-                {
-                    Email
-                };
+                var m = JsonConvert.DeserializeObject<List<PayBuddy_user>>(text)[0];
+
+                User loggedUser = new User(id:int.Parse(m.id), nick:m.nick,email:m.email);
+                
 
                 return loggedUser;
             }
             return null;
 
   
-            ///////////////////////////////////////////
+           
             
         }
 
