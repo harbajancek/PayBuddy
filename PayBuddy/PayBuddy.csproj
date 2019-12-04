@@ -56,6 +56,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FriendsModelView.cs" />
+    <Compile Include="IncomingPaymentModelView.cs" />
+    <Compile Include="OutgoingPaymentModelView.cs" />
     <Compile Include="TestPayClass.cs" />
     <Compile Include="TestUserClass.cs" />
     <Page Include="MainWindow.xaml">
@@ -97,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj">
+      <Project>{5BC86FCC-80A3-4473-A5A3-B8B1A31B2542}</Project>
+      <Name>ClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

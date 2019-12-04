@@ -9,11 +9,18 @@
     <Window.Resources>
     </Window.Resources>
     <Grid>
-        <Grid x:Name="LoginView" Grid.ColumnSpan="3" Visibility="Hidden" Background="White" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+
+        <!-- ////////// LOADING VIEW \\\\\\\\\\ -->
+        <Grid x:Name="LoadingView" Visibility="Hidden">
+            <Label Content="Loading..." FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+
+        <!-- ////////// LOGIN VIEW \\\\\\\\\\ -->
+        <Grid x:Name="LoginView" Grid.ColumnSpan="3" Visibility="Visible" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <Grid.Resources>
                 <Style TargetType="Label">
                     <Setter Property="VerticalAlignment" Value="Center"/>
@@ -31,25 +38,44 @@
                     <Setter Property="Padding" Value="5"/>
                 </Style>
             </Grid.Resources>
-            <StackPanel>
-                <Label Content="Email"/>
-                <TextBox/>
-                <Label Content="Nick"/>
-                <TextBox/>
-                <Label Content="Password"/>
-                <TextBox/>
-                <Button Content="Register"/>
-            </StackPanel>
-            <Separator Grid.RowSpan="2" VerticalAlignment="Center"/>
-            <StackPanel Grid.Row="1">
-                <Label Content="Email"/>
-                <TextBox/>
-                <Label Content="Password"/>
-                <TextBox/>
-                <Button Content="Login"/>
-            </StackPanel>
+            <Grid>
+                <Label Content="Register" FontSize="30" VerticalAlignment="Top"/>
+                <StackPanel VerticalAlignment="Center">
+                    <Label Content="Email"/>
+                    <TextBox x:Name="registerEmail"/>
+                    <Label Content="Nick"/>
+                    <TextBox x:Name="registerNick"/>
+                    <Label Content="Password"/>
+                    <TextBox x:Name="registerPassword"/>
+                    <Button Content="Register" Click="Register_ClickButton"/>
+                    <Grid>
+                        <Label x:Name="registerLoading" Visibility="Hidden" Content="Loading..."/>
+                        <Label x:Name="registerMessage" Visibility="Hidden" BorderThickness="1" BorderBrush="Black"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+            
+            <Rectangle Grid.ColumnSpan="2" VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
+            
+            <Grid Grid.Column="1">
+                <Label Content="Login" FontSize="30" VerticalAlignment="Top"/>
+                <StackPanel VerticalAlignment="Center">
+                    <Label Content="Email"/>
+                    <TextBox x:Name="loginEmail"/>
+                    <Label Content="Passworsdadd"/>
+                    <TextBox x:Name="loginPassword"/>
+                    <Button Content="Login" Click="Login_ClickButton"/>
+                    <Grid>
+                        <Label x:Name="loginLoading" Visibility="Hidden" Content="Loading..."/>
+                        <Label x:Name="loginMessage" Visibility="Hidden" Content="Login unsuccessfull" BorderThickness="1" BorderBrush="Black"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+            
         </Grid>
-        <Grid x:Name="MainView" Visibility="Visible">
+        
+        <!-- ////////// MAIN VIEW \\\\\\\\\\ -->
+        <Grid x:Name="MainView" Visibility="Hidden">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="75"/>
                 <ColumnDefinition Width="2*"/>
@@ -128,5 +154,6 @@
                 
             </Border>
         </Grid>
+        
     </Grid>
 </Window>

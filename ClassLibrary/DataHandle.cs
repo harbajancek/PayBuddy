@@ -24,22 +24,22 @@ namespace ClassLibrary
             text = text.Substring(2);
 
 
-            if (Response.StatusCode == HttpStatusCode.OK && text != "")
+            if (Response.StatusCode == HttpStatusCode.OK)
             {
-              
-                
-                var m = JsonConvert.DeserializeObject<List<PayBuddy_user>>(text)[0];
 
-                User loggedUser = new User(id:int.Parse(m.id), nick:m.nick,email:m.email);
+                var array = JsonConvert.DeserializeObject<List<PayBuddy_user>>(text);
+                if (array.Count == 0)
+                {
+                    return null;
+                }
+                var user = array[0];
+
+                User loggedUser = new User(id:int.Parse(user.id), nick:user.nick,email:user.email);
                 
 
                 return loggedUser;
             }
             return null;
-
-  
-           
-            
         }
 
         public static async Task<bool> Register(string email, string password, string nick)
