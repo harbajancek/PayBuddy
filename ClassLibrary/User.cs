@@ -8,7 +8,13 @@ namespace ClassLibrary
 {
     public class User
     {
-        public string Id { get; }
+        public User(int id, string nick, string email)
+        {
+            Id = id;
+            Nick = nick;
+            Email = email;
+        }
+        public int Id { get; }
         public string Nick { get; }
         public string Email { get; }
     }
