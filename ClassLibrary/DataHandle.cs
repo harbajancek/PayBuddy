@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,18 +15,31 @@ namespace ClassLibrary
         static string urlAddress = "https://hynekma16.sps-prosek.cz/PayBuddy/index.php";
         public static async Task<User> Login(string email, string password)
         {
-            string request = urlAddress + "?somethingsomething";
+            string request = urlAddress + $"?action=show&type=PayBuddy_user&email={email}&password={password}";
             string response = await RequestApi(request);
+            ///////////////////////////////////////
 
-            /*
+            HttpResponseMessage uff = await client.GetAsync(request);
+            string text = await uff.Content.ReadAsStringAsync();
+            text = text.Substring(2);
+
+
+            if (uff.StatusCode == HttpStatusCode.OK)
+            {
+                var m = JsonConvert.DeserializeObject<PayBuddy_user>(text);
+
+                User loggedUser = new User()
+                {
+                    Email
+                };
+
+                return loggedUser;
+            }
+            return null;
+
+  
+            ///////////////////////////////////////////
             
-            TODO
-            somehow get user or when credentials are false return null
-
-            */
-
-            User loggedUser = new User();
-            return loggedUser;
         }
 
         public static async Task<bool> Register(string email, string password, string nick)
