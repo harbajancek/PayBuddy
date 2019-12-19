@@ -139,12 +139,12 @@ namespace ClassLibrary
                     
                     if(id_position == 1)
                     {
-                        users.Add(await GetUserByID(int.Parse(friend.id1)));
+                        users.Add(await GetUserByID(int.Parse(friend.id2)));
                         users.AddRange(await GetFriends(userId, 2));
                     }
                     else
                     {
-                        users.Add(await GetUserByID(int.Parse(friend.id2)));
+                        users.Add(await GetUserByID(int.Parse(friend.id1)));
                     }
                     
                 }
