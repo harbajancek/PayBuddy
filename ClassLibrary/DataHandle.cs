@@ -151,13 +151,67 @@ namespace ClassLibrary
 
                 return users;
 
-                //return loggedUser;
+                
             }
             return null;
 
 
             
             
+        }
+
+        public static async Task<bool> AddFriends(int id1, int id2)
+        {
+            if (id1 > id2)
+            {
+                int id_temp = id2;
+                id2 = id1;
+                id1 = id_temp;
+            }
+
+            string request_user = urlAddress + $"?action=show&type=PayBuddy_friends&id1={id1}&id2={id2}";
+
+            HttpResponseMessage Response_user = await client.GetAsync(request_user);
+            string text = await Response_user.Content.ReadAsStringAsync();
+
+
+
+            if (Response_user.StatusCode == HttpStatusCode.OK)
+            {
+                text = text.Substring(2);
+                var array = JsonConvert.DeserializeObject<List<PayBuddy_user>>(text);
+                if (array.Count != 0)
+                {
+                    return false;
+                }
+
+
+            }
+            else
+            {
+                return false;
+            }
+
+            string request = urlAddress + $"?action=insert&type=PayBuddy_friends&id1={id1}&id2={id2}";
+
+
+            HttpResponseMessage Response_register = await client.GetAsync(request);
+
+
+
+            if (Response_register.StatusCode == HttpStatusCode.OK)
+            {
+                return true;
+            }
+
+
+            return false;
+
+
+
+
+
+
         }
 
         public static async Task<IEnumerable<Payment>> GetOwnedPayments(int userID)
