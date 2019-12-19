@@ -166,8 +166,7 @@ namespace ClassLibrary
                     if(id_position == 1)
                     {
                         users.Add(await GetUserByID(int.Parse(friend.id2)));
-                        users.AddRange(await GetFriends(userId, 2));
-                        return users;
+                        
                     }
                     else
                     {
@@ -175,8 +174,18 @@ namespace ClassLibrary
                     }
                     
                 }
-                return new List<User>();
+                if (id_position == 1)
+                {
+                    users.AddRange(await GetFriends(userId, 2));
+                    return users;
 
+
+                }
+                else
+                {
+                    return users;
+                }
+                
 
 
             }
