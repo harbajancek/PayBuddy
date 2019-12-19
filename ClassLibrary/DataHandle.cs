@@ -142,8 +142,10 @@ namespace ClassLibrary
                 return false;
         }
 
-        public static async Task<IEnumerable<User>> GetFriends(int userId, int id_position = 1)
+        public static async Task<IEnumerable<User>> GetFriends(User user, int id_position = 1)
         {
+            int userId = user.Id;
+
             string request = urlAddress + $"?action=show&type=PayBuddy_friends&id{id_position}={userId}";
             string response = await RequestApi(request);
 
@@ -176,7 +178,7 @@ namespace ClassLibrary
                 }
                 if (id_position == 1)
                 {
-                    users.AddRange(await GetFriends(userId, 2));
+                    users.AddRange(await GetFriends(user, 2));
                     return users;
 
 
@@ -249,7 +251,7 @@ namespace ClassLibrary
 
         }
 
-        public static async Task<IEnumerable<Payment>> GetOwnedPayments(int userID)
+        public static async Task<IEnumerable<Payment>> GetOwnedPayments(User userID) //vše co zadal někomu jinemu
         {
             string request = urlAddress + "?somethingsomething";
             string response = await RequestApi(request);
@@ -265,7 +267,7 @@ namespace ClassLibrary
             return payments;
         }
 
-        public static async Task<IEnumerable<Payment>> GetRecievedPayments(int userId)
+        public static async Task<IEnumerable<Payment>> GetRecievedPayments(User userId) //vše co má zaplatit
         {
             string request = urlAddress + "?somethingsomething";
             string response = await RequestApi(request);
@@ -280,7 +282,7 @@ namespace ClassLibrary
             List<Payment> payments = new List<Payment>();
             return payments;
         }
-        public static async Task<bool> PaymentIsPaid(int PaymentUserId)
+        public static async Task<bool> ChangePaymentIsPaid(Payment PaymentUserId, bool ToChange) //změnit paid
         {
             string request = urlAddress + "?somethingsomething";
             string response = await RequestApi(request);
@@ -294,7 +296,7 @@ namespace ClassLibrary
             return false;
            
         }
-        public static async Task<bool> PaymentIsPending(int PaymentUserId)
+        public static async Task<bool> ChangePaymentIsPending(Payment PaymentUserId, bool ToChange)
         {
             string request = urlAddress + "?somethingsomething";
             string response = await RequestApi(request);
@@ -308,21 +310,8 @@ namespace ClassLibrary
 
             return false;
         }
-        public static async Task<bool> CreatePayer(int PaymentUserId)
-        {
-            string request = urlAddress + "?somethingsomething";
-            string response = await RequestApi(request);
-
-            /*
-            
-            TODO
-            somehow get all payments which the user is reciever of
-
-            */
-            return false;
-
-        }
-        public static async Task<bool> CreatePayment(int PaymentUserId)
+       
+        public static async Task<bool> CreatePayment(Payment Ppayment_to_add)
         {
             string request = urlAddress + "?somethingsomething";
             string response = await RequestApi(request);
