@@ -21,9 +21,9 @@ namespace PayBuddy
     /// </summary>
     public partial class MainWindow : Window
     {
-        FriendsModelView FriendsModelView { get; set; }
-        OutgoingPaymentModelView OutgoingPaymentModelView { get; set; }
-        IncomingPaymentModelView IncomingPaymentModelView { get; set; }
+        FriendsModelView FriendsModelView { get; set; } = new FriendsModelView();
+        OutgoingPaymentModelView OutgoingPaymentModelView { get; set; } = new OutgoingPaymentModelView();
+        IncomingPaymentModelView IncomingPaymentModelView { get; set; } = new IncomingPaymentModelView();
         User LoggedUser { get; set; } = null;
 
         public MainWindow()
@@ -97,7 +97,7 @@ namespace PayBuddy
 
             InitializeComponent();
 
-            //Friends.ItemsSource = testUsers;
+            Friends.ItemsSource = FriendsModelView.Friends;
             //Payments.ItemsSource = testPays;
         }
 
@@ -177,9 +177,43 @@ namespace PayBuddy
             }
         }
 
+        private void UnloadData()
+        {
+            LoggedUser = null;
+
+            FriendsModelView.Friends.Clear();
+            OutgoingPaymentModelView.OutgoingPayments.Clear();
+            IncomingPaymentModelView.IncomingPayments.Clear();
+        }
+
+        private async Task ReloadData()
+        {
+            FriendsModelView.Friends.Clear();
+            OutgoingPaymentModelView.OutgoingPayments.Clear();
+            IncomingPaymentModelView.IncomingPayments.Clear();
+            await LoadData();
+        }
+
         private void Logout_ClickButton(object sender, RoutedEventArgs e)
         {
+            MainView.Visibility = Visibility.Hidden;
+            LoadingView.Visibility = Visibility.Visible;
 
+            UnloadData();
+
+            LoadingView.Visibility = Visibility.Hidden;
+            LoginView.Visibility = Visibility.Visible;
+        }
+
+        private async void AddFriend_ClickButton(object sender, RoutedEventArgs e)
+        {
+            User friend = await DataHandle.GetUserByEmail(AddFriendEmail.Text);
+            if (friend == null)
+            {
+                return;
+            }
+            await DataHandle.AddFriends(LoggedUser, friend);
+            await ReloadData();
         }
     }
 }

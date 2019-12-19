@@ -10,6 +10,6 @@ namespace PayBuddy
 {
     class OutgoingPaymentModelView
     {
-        public ObservableCollection<Payment> OutgoingPayments { get; set; }
+        public ObservableCollection<Payment> OutgoingPayments { get; set; } = new ObservableCollection<Payment>();
     }
 }

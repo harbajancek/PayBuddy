@@ -10,6 +10,6 @@ namespace PayBuddy
 {
     class FriendsModelView
     {
-        public ObservableCollection<User> Friends { get; set; }
+        public ObservableCollection<User> Friends { get; set; } = new ObservableCollection<User>();
     }
 }
