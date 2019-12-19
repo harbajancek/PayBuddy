@@ -44,17 +44,55 @@ namespace ClassLibrary
 
         public static async Task<bool> Register(string email, string password, string nick)
         {
-            string request = urlAddress + "?somethingsomething";
-            string response = await RequestApi(request);
+            string request_user = urlAddress + $"?action=show&type=PayBuddy_user&email={email}";
 
-            /*
+
+
+
+
+
+
+
+            HttpResponseMessage Response_user = await client.GetAsync(request_user);
+            string text = await Response_user.Content.ReadAsStringAsync();
             
-            TODO
-            somehow get if registration successfull
 
-            */
 
-            return false;
+            if (Response_user.StatusCode == HttpStatusCode.OK)
+            {
+                text = text.Substring(2);
+                var array = JsonConvert.DeserializeObject<List<PayBuddy_user>>(text);
+                if (array.Count != 0)
+                {
+                    return false;
+                }
+
+
+            }
+            else
+            {
+                return false;
+            }
+
+
+
+
+
+
+            string request = urlAddress + $"?action=insert&type=PayBuddy_user&email={email}&password={password}&nick={nick}";
+
+
+            HttpResponseMessage Response_register = await client.GetAsync(request);
+
+
+
+            if (Response_register.StatusCode == HttpStatusCode.OK)
+            {
+                return true;
+            }
+               
+
+                return false;
         }
 
         public static async Task<IEnumerable<User>> GetFriends(int userId)
