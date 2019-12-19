@@ -16,7 +16,7 @@
         </Grid>
 
         <!-- ////////// LOGIN VIEW \\\\\\\\\\ -->
-        <Grid x:Name="LoginView" Grid.ColumnSpan="3" Visibility="Visible" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid x:Name="LoginView" Grid.ColumnSpan="3" Visibility="Hidden" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -27,6 +27,11 @@
                     <Setter Property="HorizontalAlignment" Value="Center"/>
                 </Style>
                 <Style TargetType="TextBox">
+                    <Setter Property="MinWidth" Value="200"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="PasswordBox">
                     <Setter Property="MinWidth" Value="200"/>
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -46,7 +51,7 @@
                     <Label Content="Nick"/>
                     <TextBox x:Name="registerNick"/>
                     <Label Content="Password"/>
-                    <TextBox x:Name="registerPassword"/>
+                    <PasswordBox x:Name="registerPassword"/>
                     <Button Content="Register" Click="Register_ClickButton"/>
                     <Grid>
                         <Label x:Name="registerLoading" Visibility="Hidden" Content="Loading..."/>
@@ -62,8 +67,8 @@
                 <StackPanel VerticalAlignment="Center">
                     <Label Content="Email"/>
                     <TextBox x:Name="loginEmail"/>
-                    <Label Content="Passworsdadd"/>
-                    <TextBox x:Name="loginPassword"/>
+                    <Label Content="Password"/>
+                    <PasswordBox x:Name="loginPassword"/>
                     <Button Content="Login" Click="Login_ClickButton"/>
                     <Grid>
                         <Label x:Name="loginLoading" Visibility="Hidden" Content="Loading..."/>
@@ -75,7 +80,7 @@
         </Grid>
         
         <!-- ////////// MAIN VIEW \\\\\\\\\\ -->
-        <Grid x:Name="MainView" Visibility="Hidden">
+        <Grid x:Name="MainView" Visibility="Visible">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="75"/>
                 <ColumnDefinition Width="2*"/>
@@ -83,11 +88,21 @@
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
                 <StackPanel>
-                    <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
-                    <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
-                    <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
-                    <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
-                    <Rectangle Stroke="Black" StrokeThickness="1" Margin="5" Width="60" Height="60"/>
+                    <Border Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
+                        <Image Source="/images/logout.png"/>
+                    </Border>
+                    <Border Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
+                        <Image Source="/images/logout.png"/>
+                    </Border>
+                    <Border Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
+                        <Image Source="/images/logout.png"/>
+                    </Border>
+                    <Border Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
+                        <Image Source="/images/logout.png"/>
+                    </Border>
+                    <Button Click="Logout_ClickButton" Background="Transparent" Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
+                        <Image Source="/images/logout.png"/>
+                    </Button>
                 </StackPanel>
             </Border>
             <Border Grid.Column="1" BorderThickness="1" BorderBrush="Black">

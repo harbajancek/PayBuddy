@@ -107,7 +107,7 @@ namespace PayBuddy
             registerMessage.Visibility = Visibility.Hidden;
             registerLoading.Visibility = Visibility.Visible;
             string email = registerEmail.Text;
-            string password = registerPassword.Text;
+            string password = registerPassword.Password;
             string nick = registerNick.Text;
 
             bool success = await DataHandle.Register(email, password, nick);
@@ -134,8 +134,8 @@ namespace PayBuddy
             ((Button)sender).IsEnabled = false;
             loginMessage.Visibility = Visibility.Hidden;
             loginLoading.Visibility = Visibility.Visible;
-            string email = registerEmail.Text;
-            string password = registerPassword.Text;
+            string email = loginEmail.Text;
+            string password = loginPassword.Password;
 
             LoggedUser = await DataHandle.Login(email, password);
             loginLoading.Visibility = Visibility.Hidden;
@@ -152,27 +152,34 @@ namespace PayBuddy
                 await LoadData();
                 LoadingView.Visibility = Visibility.Hidden;
                 MainView.Visibility = Visibility.Visible;
+                loginEmail.Text = string.Empty;
             }
 
+            loginPassword.Password = string.Empty;
             ((Button)sender).IsEnabled = true;
         }
 
         private async Task LoadData()
         {
-            foreach (var item in await DataHandle.GetFriends(LoggedUser.Id))
+            foreach (User user in await DataHandle.GetFriends(LoggedUser.Id))
             {
-                FriendsModelView.Friends.Add(item);
+                FriendsModelView.Friends.Add(user);
             }
 
-            foreach (var item in await DataHandle.GetOwnedPayments(LoggedUser.Id))
+            foreach (Payment payment in await DataHandle.GetOwnedPayments(LoggedUser.Id))
             {
-                OutgoingPaymentModelView.OutgoingPayments.Add(item);
+                OutgoingPaymentModelView.OutgoingPayments.Add(payment);
             }
 
-            foreach (var item in await DataHandle.GetRecievedPayments(LoggedUser.Id))
+            foreach (Payment payment in await DataHandle.GetRecievedPayments(LoggedUser.Id))
             {
-                IncomingPaymentModelView.IncomingPayments.Add(item);
+                IncomingPaymentModelView.IncomingPayments.Add(payment);
             }
+        }
+
+        private void Logout_ClickButton(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
