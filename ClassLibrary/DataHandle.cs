@@ -13,6 +13,36 @@ namespace ClassLibrary
     {
         static HttpClient client = new HttpClient();
         static string urlAddress = "https://hynekma16.sps-prosek.cz/PayBuddy/index.php";
+
+        public static async Task<User> GetUserByID(int id)
+        {
+            string request = urlAddress + $"?action=show&type=PayBuddy_user&id={id}";
+            string response = await RequestApi(request);
+
+
+            HttpResponseMessage Response = await client.GetAsync(request);
+            string text = await Response.Content.ReadAsStringAsync();
+            text = text.Substring(2);
+
+
+            if (Response.StatusCode == HttpStatusCode.OK)
+            {
+
+                var array = JsonConvert.DeserializeObject<List<PayBuddy_user>>(text);
+                if (array.Count == 0)
+                {
+                    return null;
+                }
+                var user = array[0];
+
+                User loggedUser = new User(id: int.Parse(user.id), nick: user.nick, email: user.email);
+
+
+                return loggedUser;
+            }
+            return null;
+        }
+
         public static async Task<User> Login(string email, string password)
         {
             string request = urlAddress + $"?action=show&type=PayBuddy_user&email={email}&password={password}";
@@ -46,13 +76,6 @@ namespace ClassLibrary
         {
             string request_user = urlAddress + $"?action=show&type=PayBuddy_user&email={email}";
 
-
-
-
-
-
-
-
             HttpResponseMessage Response_user = await client.GetAsync(request_user);
             string text = await Response_user.Content.ReadAsStringAsync();
             
@@ -74,11 +97,6 @@ namespace ClassLibrary
                 return false;
             }
 
-
-
-
-
-
             string request = urlAddress + $"?action=insert&type=PayBuddy_user&email={email}&password={password}&nick={nick}";
 
 
@@ -97,18 +115,39 @@ namespace ClassLibrary
 
         public static async Task<IEnumerable<User>> GetFriends(int userId)
         {
-            string request = urlAddress + "?somethingsomething";
+            string request = urlAddress + $"?action=show&type=PayBuddy_friends&id1={userId}";
             string response = await RequestApi(request);
 
-            /*
+            HttpResponseMessage Response = await client.GetAsync(request);
+            string text = await Response.Content.ReadAsStringAsync();
+            text = text.Substring(2);
+
+
+            if (Response.StatusCode == HttpStatusCode.OK)
+            {
+
+                var array = JsonConvert.DeserializeObject<List<PayBuddy_friends>>(text);
+                if (array.Count == 0)
+                {
+                    return null;
+                }
+
+                List<User> users = new List<User>();
+
+                foreach (PayBuddy_friends friend in array)
+                {
+                    users.Add(await GetUserByID(Int32.Parse(friend.id2)));
+                }
+
+                return users;
+
+                //return loggedUser;
+            }
+            return null;
+
+
             
-            TODO
-            somehow get all friends user
-
-            */
-
-            List<User> users = new List<User>();
-            return users;
+            
         }
 
         public static async Task<IEnumerable<Payment>> GetOwnedPayments(int userID)
