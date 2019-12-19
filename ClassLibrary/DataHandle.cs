@@ -156,10 +156,7 @@ namespace ClassLibrary
             {
 
                 var array = JsonConvert.DeserializeObject<List<PayBuddy_friends>>(text);
-                if (array.Count == 0)
-                {
-                    return null;
-                }
+                
 
                 List<User> users = new List<User>();
 
@@ -170,6 +167,7 @@ namespace ClassLibrary
                     {
                         users.Add(await GetUserByID(int.Parse(friend.id2)));
                         users.AddRange(await GetFriends(userId, 2));
+                        return users;
                     }
                     else
                     {
@@ -177,10 +175,10 @@ namespace ClassLibrary
                     }
                     
                 }
+                return new List<User>();
 
-                return users;
 
-                
+
             }
             return null;
 
