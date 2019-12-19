@@ -20,6 +20,35 @@ namespace ClassLibrary
             string response = await RequestApi(request);
 
 
+            HttpResponseMessage Response = await client.GetAsync(request);//Budoucí já, promluvuji ti doduše! Oprav to prosím za mě... dole je na toto funkce, nechce se mi to dělat tekže to udělej za mě... děkuji :)
+            string text = await Response.Content.ReadAsStringAsync();
+            text = text.Substring(2);
+
+
+            if (Response.StatusCode == HttpStatusCode.OK)
+            {
+
+                var array = JsonConvert.DeserializeObject<List<PayBuddy_user>>(text);
+                if (array.Count == 0)
+                {
+                    return null;
+                }
+                var user = array[0];
+
+                User loggedUser = new User(id: int.Parse(user.id), nick: user.nick, email: user.email);
+
+
+                return loggedUser;
+            }
+            return null;
+        }
+
+        public static async Task<User> GetUserByEmail(string email)
+        {
+            string request = urlAddress + $"?action=show&type=PayBuddy_user&email={email}";
+            string response = await RequestApi(request);
+
+
             HttpResponseMessage Response = await client.GetAsync(request);
             string text = await Response.Content.ReadAsStringAsync();
             text = text.Substring(2);
@@ -160,8 +189,11 @@ namespace ClassLibrary
             
         }
 
-        public static async Task<bool> AddFriends(int id1, int id2)
+        public static async Task<bool> AddFriends(User loggedUser, User friend)
         {
+            int id1 = loggedUser.Id;
+            int id2 = friend.Id;
+
             if (id1 > id2)
             {
                 int id_temp = id2;
@@ -208,10 +240,6 @@ namespace ClassLibrary
             return false;
 
 
-
-
-
-
         }
 
         public static async Task<IEnumerable<Payment>> GetOwnedPayments(int userID)
@@ -244,6 +272,62 @@ namespace ClassLibrary
 
             List<Payment> payments = new List<Payment>();
             return payments;
+        }
+        public static async Task<bool> PaymentIsPaid(int PaymentUserId)
+        {
+            string request = urlAddress + "?somethingsomething";
+            string response = await RequestApi(request);
+
+            /*
+            
+            TODO
+            somehow get all payments which the user is reciever of
+
+            */
+
+           
+        }
+        public static async Task<bool> PaymentIsPending(int PaymentUserId)
+        {
+            string request = urlAddress + "?somethingsomething";
+            string response = await RequestApi(request);
+
+            /*
+            
+            TODO
+            somehow get all payments which the user is reciever of
+
+            */
+
+
+        }
+        public static async Task<bool> CreatePayer(int PaymentUserId)
+        {
+            string request = urlAddress + "?somethingsomething";
+            string response = await RequestApi(request);
+
+            /*
+            
+            TODO
+            somehow get all payments which the user is reciever of
+
+            */
+
+
+        }
+        public static async Task<bool> CreatePayment(int PaymentUserId)
+        {
+            string request = urlAddress + "?somethingsomething";
+            string response = await RequestApi(request);
+
+            /*
+            
+            TODO
+            somehow get all payments which the user is reciever of
+
+            */
+
+
         }
 
         private static async Task<string> RequestApi(string uriRequest)
