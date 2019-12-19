@@ -282,7 +282,7 @@ namespace ClassLibrary
             somehow get all payments which the user is reciever of
 
             */
-
+            return false;
            
         }
         public static async Task<bool> PaymentIsPending(int PaymentUserId)
@@ -297,7 +297,7 @@ namespace ClassLibrary
 
             */
 
-
+            return false;
         }
         public static async Task<bool> CreatePayer(int PaymentUserId)
         {
@@ -310,7 +310,7 @@ namespace ClassLibrary
             somehow get all payments which the user is reciever of
 
             */
-
+            return false;
 
         }
         public static async Task<bool> CreatePayment(int PaymentUserId)
@@ -325,7 +325,7 @@ namespace ClassLibrary
 
             */
 
-
+            return false;
         }
 
         private static async Task<string> RequestApi(string uriRequest)
