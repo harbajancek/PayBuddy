@@ -113,9 +113,9 @@ namespace ClassLibrary
                 return false;
         }
 
-        public static async Task<IEnumerable<User>> GetFriends(int userId)
+        public static async Task<IEnumerable<User>> GetFriends(int userId, int id_position = 1)
         {
-            string request = urlAddress + $"?action=show&type=PayBuddy_friends&id1={userId}";
+            string request = urlAddress + $"?action=show&type=PayBuddy_friends&id{id_position}={userId}";
             string response = await RequestApi(request);
 
             HttpResponseMessage Response = await client.GetAsync(request);
@@ -137,6 +137,11 @@ namespace ClassLibrary
                 foreach (PayBuddy_friends friend in array)
                 {
                     users.Add(await GetUserByID(Int32.Parse(friend.id2)));
+                    if(id_position == 1)
+                    {
+                        users.AddRange(await GetFriends(userId, 2));
+                    }
+                    
                 }
 
                 return users;
