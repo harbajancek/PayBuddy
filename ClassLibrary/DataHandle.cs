@@ -136,10 +136,15 @@ namespace ClassLibrary
 
                 foreach (PayBuddy_friends friend in array)
                 {
-                    users.Add(await GetUserByID(Int32.Parse(friend.id2)));
+                    
                     if(id_position == 1)
                     {
+                        users.Add(await GetUserByID(int.Parse(friend.id1)));
                         users.AddRange(await GetFriends(userId, 2));
+                    }
+                    else
+                    {
+                        users.Add(await GetUserByID(int.Parse(friend.id2)));
                     }
                     
                 }
