@@ -77,7 +77,7 @@ namespace ClassLibrary
         public static async Task<User> Login(string email, string password)
         {
             string request = urlAddress + $"?action=show&type=PayBuddy_user&email={email}&password={password}";
-            string response = await RequestApi(request);
+
            
 
             HttpResponseMessage Response = await client.GetAsync(request);
