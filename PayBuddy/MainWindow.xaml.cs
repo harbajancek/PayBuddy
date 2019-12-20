@@ -125,10 +125,15 @@ namespace PayBuddy
 
         private async Task ReloadData()
         {
+            PaymentLoading.Visibility = Visibility.Visible;
+            FriendsLoading.Visibility = Visibility.Visible;
             FriendsModelView.Friends.Clear();
             OutgoingPaymentModelView.OutgoingPayments.Clear();
             IncomingPaymentModelView.IncomingPayments.Clear();
             await LoadData();
+
+            PaymentLoading.Visibility = Visibility.Hidden;
+            FriendsLoading.Visibility = Visibility.Hidden;
         }
 
         private void Logout_ClickButton(object sender, RoutedEventArgs e)

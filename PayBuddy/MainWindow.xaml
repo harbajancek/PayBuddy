@@ -115,7 +115,7 @@
                             <Button Click="AddPayment_ButtonClick" Content="Create" HorizontalAlignment="Right" FontWeight="SemiBold" Padding="5" FontSize="15" Margin="5"/>
                         </Grid>
                         <Separator/>
-                        <Label Content="Title:"/>
+                        <Label Content="Title"/>
                         <TextBox Name="Title"/>
                         <Label Content="Description"/>
                         <TextBox Name="Description" MinHeight="50"/>
@@ -250,6 +250,7 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+                        <Label x:Name="PaymentLoading" Visibility="Hidden" Grid.Row="1" Content="Loading..."/>
                     </Grid>
                 </ScrollViewer>
             </Border>
@@ -278,6 +279,7 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+                        <Label Visibility="Hidden" x:Name="FriendsLoading" Content="Loading..."/>
                     </StackPanel>
                 </ScrollViewer>
                 
