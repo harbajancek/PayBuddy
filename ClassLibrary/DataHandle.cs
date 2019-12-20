@@ -20,7 +20,7 @@ namespace ClassLibrary
             string response = await RequestApi(request);
 
 
-            HttpResponseMessage Response = await client.GetAsync(request);//Budoucí já, promluvuji ti doduše! Oprav to prosím za mě... dole je na toto funkce, nechce se mi to dělat tekže to udělej za mě... děkuji :)
+            HttpResponseMessage Response = await client.GetAsync(request);//Budoucí já, promluvuji ti doduše! Oprav to prosím za mě... dole je na toto funkce, nechce se mi to dělat tekže to udělej za mě... děkuji :) ne
             string text = await Response.Content.ReadAsStringAsync();
             text = text.Substring(2);
 
@@ -251,79 +251,112 @@ namespace ClassLibrary
 
         }
 
-        public static async Task<IEnumerable<Payment>> GetOwnedPayments(User userID) //vše co zadal někomu jinemu
+        public static async Task<List<Payment>> GetOwnedPayments(User user_owner) //vše co zadal někomu jinemu
         {
-            string request = urlAddress + "?somethingsomething";
+            string request = urlAddress + $"?action=show&type=PayBuddy_payments&id_master={user_owner.Id}";
             string response = await RequestApi(request);
 
-            /*
-            
-            TODO
-            somehow get all payments which the user is master of
+            HttpResponseMessage Response = await client.GetAsync(request);
+            string text = await Response.Content.ReadAsStringAsync();
+            text = text.Substring(2);
 
-            */
 
-            List<Payment> payments = new List<Payment>();
-            return payments;
+            if (Response.StatusCode == HttpStatusCode.OK)
+            {
+
+                var array = JsonConvert.DeserializeObject<List<PayBuddy_payments>>(text);
+
+                List<Payment> Payments = new List<Payment>();
+
+                foreach (PayBuddy_payments payment in array)
+                {
+                    Payments.Add(new Payment(id: int.Parse(payment.id), master: await GetUserByID(int.Parse(payment.id_master)), payer: await GetUserByID(int.Parse(payment.id_user)), title: payment.title, description: payment.descr, amount: int.Parse(payment.amount), isPending: bool.Parse(payment.is_pending), isPaid: bool.Parse(payment.is_paid)));
+                }
+                return Payments; 
+            }
+            return null;
+
         }
 
-        public static async Task<IEnumerable<Payment>> GetRecievedPayments(User userId) //vše co má zaplatit
+        public static async Task<List<Payment>> GetRecievedPayments(User user_owner) //vše co má zaplatit
         {
-            string request = urlAddress + "?somethingsomething";
+            string request = urlAddress + $"?action=show&type=PayBuddy_payments&id_user={user_owner.Id}";
             string response = await RequestApi(request);
 
-            /*
-            
-            TODO
-            somehow get all payments which the user is reciever of
+            HttpResponseMessage Response = await client.GetAsync(request);
+            string text = await Response.Content.ReadAsStringAsync();
+            text = text.Substring(2);
 
-            */
 
-            List<Payment> payments = new List<Payment>();
-            return payments;
+            if (Response.StatusCode == HttpStatusCode.OK)
+            {
+
+                var array = JsonConvert.DeserializeObject<List<PayBuddy_payments>>(text);
+
+                List<Payment> Payments = new List<Payment>();
+
+                foreach (PayBuddy_payments payment in array)
+                {
+                    Payments.Add(new Payment(id: int.Parse(payment.id), master: await GetUserByID(int.Parse(payment.id_master)), payer: await GetUserByID(int.Parse(payment.id_user)), title: payment.title, description: payment.descr, amount: int.Parse(payment.amount), isPending: bool.Parse(payment.is_pending), isPaid: bool.Parse(payment.is_paid)));
+                }
+                return Payments;
+            }
+            return null;
         }
-        public static async Task<bool> ChangePaymentIsPaid(Payment PaymentUserId, bool ToChange) //změnit paid
+        public static async Task<bool> ChangePaymentIsPaid(Payment PaymentToChange, bool ToChange) //změnit paid
         {
-            string request = urlAddress + "?somethingsomething";
-            string response = await RequestApi(request);
-
-            /*
+            string request = urlAddress + $"?action=update&type=PayBuddy_payments&id_user={PaymentToChange.Id}&is_paid={ToChange}";
             
-            TODO
-            somehow get all payments which the user is reciever of
 
-            */
+            HttpResponseMessage Response = await client.GetAsync(request);
+            
+            if (Response.StatusCode == HttpStatusCode.OK)
+            {
+
+                
+
+                return true;
+            }
             return false;
-           
+
         }
-        public static async Task<bool> ChangePaymentIsPending(Payment PaymentUserId, bool ToChange)
+        public static async Task<bool> ChangePaymentIsPending(Payment PaymentToChange, bool ToChange)
         {
-            string request = urlAddress + "?somethingsomething";
-            string response = await RequestApi(request);
+            string request = urlAddress + $"?action=update&type=PayBuddy_payments&id_user={PaymentToChange.Id}&is_pending={ToChange}";
 
-            /*
-            
-            TODO
-            somehow get all payments which the user is reciever of
 
-            */
+            HttpResponseMessage Response = await client.GetAsync(request);
 
+            if (Response.StatusCode == HttpStatusCode.OK)
+            {
+
+
+
+                return true;
+            }
             return false;
         }
        
-        public static async Task<bool> CreatePayment(Payment Ppayment_to_add)
+        public static async Task<bool> CreatePayment(Payment PaymentToAdd) ////////////// nwm jestli tam chceš dátt jednotlivé data + uživatele nebo celou platbu, když tak napiš//////////////////////////////////////
         {
-            string request = urlAddress + "?somethingsomething";
-            string response = await RequestApi(request);
-
-            /*
             
-            TODO
-            somehow get all payments which the user is reciever of
 
-            */
+            string request = urlAddress + $"?action=insert&type=PayBuddy_payments&id_master={PaymentToAdd.Master}&title={PaymentToAdd.Title}&descr={PaymentToAdd.Description}&amount={PaymentToAdd.Amount}&id_user={PaymentToAdd.Payer}&is_paid={PaymentToAdd.IsPaid}&is_pending={PaymentToAdd.IsPending}";
+
+
+            HttpResponseMessage Response = await client.GetAsync(request);
+
+
+
+            if (Response.StatusCode == HttpStatusCode.OK)
+            {
+                return true;
+            }
+
 
             return false;
+
+            
         }
 
         private static async Task<string> RequestApi(string uriRequest)

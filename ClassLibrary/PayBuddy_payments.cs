@@ -17,7 +17,10 @@ namespace ClassLibrary
             public string title { get; set; }
             public string descr { get; set; }
             public string amount { get; set; }
-        }
+            public string id_user { get; set; }
+            public string is_paid { get; set; }
+            public string is_pending { get; set; }
+    }
 
     
 }
