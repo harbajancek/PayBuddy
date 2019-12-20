@@ -13,14 +13,16 @@ namespace ClassLibrary
     {
         static HttpClient client = new HttpClient();
         static string urlAddress = "https://hynekma16.sps-prosek.cz/PayBuddy/index.php";
-
+        /// <summary>  
+        ///  Získává objekt User pomocí jeho jedinečného id (int)
+        /// </summary>  
         public static async Task<User> GetUserByID(int id)
         {
             string request = urlAddress + $"?action=show&type=PayBuddy_user&id={id}";
             string response = await RequestApi(request);
 
 
-            HttpResponseMessage Response = await client.GetAsync(request);//Budoucí já, promluvuji ti doduše! Oprav to prosím za mě... dole je na toto funkce, nechce se mi to dělat tekže to udělej za mě... děkuji :) ne
+            HttpResponseMessage Response = await client.GetAsync(request);
             string text = await Response.Content.ReadAsStringAsync();
             text = text.Substring(2);
 
@@ -42,7 +44,9 @@ namespace ClassLibrary
             }
             return null;
         }
-
+        /// <summary>  
+        ///  Získává objekt User pomocí jeho jedinečného emailu (string)
+        /// </summary>  
         public static async Task<User> GetUserByEmail(string email)
         {
             string request = urlAddress + $"?action=show&type=PayBuddy_user&email={email}";
@@ -71,7 +75,9 @@ namespace ClassLibrary
             }
             return null;
         }
-
+        /// <summary>  
+        ///  Získává objekt User pomocí jeho jedinečného emailu (string) a hesla (string)
+        /// </summary>  
         public static async Task<User> Login(string email, string password)
         {
             string request = urlAddress + $"?action=show&type=PayBuddy_user&email={email}&password={password}";
@@ -100,10 +106,12 @@ namespace ClassLibrary
             }
             return null;
         }
-
+        /// <summary>  
+        ///  vloži objekt User do databáze. Zadávajá se jeho Email (string) heslo (string) a nick (string)
+        /// </summary>  
         public static async Task<bool> Register(string email, string password, string nick)
         {
-            string request_user = urlAddress + $"?action=show&type=PayBuddy_user&email={email}";
+            string request_user = urlAddress + $"?action=show&type=PayBuddy_user&email={email}"; //kontrola jestli email už neexistuje
 
             HttpResponseMessage Response_user = await client.GetAsync(request_user);
             string text = await Response_user.Content.ReadAsStringAsync();
@@ -126,7 +134,7 @@ namespace ClassLibrary
                 return false;
             }
 
-            string request = urlAddress + $"?action=insert&type=PayBuddy_user&email={email}&password={password}&nick={nick}";
+            string request = urlAddress + $"?action=insert&type=PayBuddy_user&email={email}&password={password}&nick={nick}"; //vkládání do databáze
 
 
             HttpResponseMessage Response_register = await client.GetAsync(request);
@@ -141,8 +149,10 @@ namespace ClassLibrary
 
                 return false;
         }
-
-        public static async Task<IEnumerable<User>> GetFriends(User user, int id_position = 1)
+        /// <summary>  
+        ///  Získává list objektů User pomocí objektu User. 
+        /// </summary>  
+        public static async Task<List<User>> GetFriends(User user, int id_position = 1)
         {
             int userId = user.Id;
 
@@ -197,7 +207,9 @@ namespace ClassLibrary
             
             
         }
-
+        /// <summary>  
+        ///  Vloží do databáze spojení 2 uživatelů pomocí 2 objektů user
+        /// </summary>  
         public static async Task<bool> AddFriends(User loggedUser, User friend)
         {
             int id1 = loggedUser.Id;
@@ -250,25 +262,27 @@ namespace ClassLibrary
 
 
         }
-
+        /// <summary>  
+        ///  Získává list objektů Payment patřící zadanému objektu User
+        /// </summary>  
         public static async Task<List<Payment>> GetOwnedPayments(User user_owner) //vše co zadal někomu jinemu
         {
-            string request = urlAddress + $"?action=show&type=PayBuddy_payments&id_master={user_owner.Id}";
+            string request = urlAddress + $"?action=show&type=PayBuddy_payments&id_master={user_owner.Id}";//dotaz pro api
             string response = await RequestApi(request);
 
             HttpResponseMessage Response = await client.GetAsync(request);
-            string text = await Response.Content.ReadAsStringAsync();
-            text = text.Substring(2);
+            string text = await Response.Content.ReadAsStringAsync(); // získává text z webu
+            text = text.Substring(2);//zbavuje se nechtěných znaků
 
 
-            if (Response.StatusCode == HttpStatusCode.OK)
+            if (Response.StatusCode == HttpStatusCode.OK)//kontroluje jesti byl dotaz zadán správně
             {
 
-                var array = JsonConvert.DeserializeObject<List<PayBuddy_payments>>(text);
+                var array = JsonConvert.DeserializeObject<List<PayBuddy_payments>>(text); //převádní json na objekt
 
                 List<Payment> Payments = new List<Payment>();
 
-                foreach (PayBuddy_payments payment in array)
+                foreach (PayBuddy_payments payment in array) // převádí objekty databáze do objektů které se používají
                 {
                     Payments.Add(new Payment(id: int.Parse(payment.id), master: await GetUserByID(int.Parse(payment.id_master)), payer: await GetUserByID(int.Parse(payment.id_user)), title: payment.title, description: payment.descr, amount: int.Parse(payment.amount), isPending: bool.Parse(payment.is_pending), isPaid: bool.Parse(payment.is_paid)));
                 }
@@ -277,6 +291,9 @@ namespace ClassLibrary
             return null;
 
         }
+        /// <summary>  
+        ///  Získává list objektů Payment které zadaný objekt User dluží
+        /// </summary>  
 
         public static async Task<List<Payment>> GetRecievedPayments(User user_owner) //vše co má zaplatit
         {
@@ -303,14 +320,18 @@ namespace ClassLibrary
             }
             return null;
         }
+
+        /// <summary>  
+        ///  Změní stav objektů Payment pomocí uživatele a stavu který je potřeba
+        /// </summary>  
         public static async Task<bool> ChangePaymentIsPaid(Payment PaymentToChange, bool ToChange) //změnit paid
         {
             string request = urlAddress + $"?action=update&type=PayBuddy_payments&id_user={PaymentToChange.Id}&is_paid={ToChange}";
             
 
-            HttpResponseMessage Response = await client.GetAsync(request);
+            HttpResponseMessage Response = await client.GetAsync(request); //vkládá do api data
             
-            if (Response.StatusCode == HttpStatusCode.OK)
+            if (Response.StatusCode == HttpStatusCode.OK) // kontroluje zdali je vše v pořádku
             {
 
                 
@@ -320,6 +341,10 @@ namespace ClassLibrary
             return false;
 
         }
+
+        /// <summary>  
+        ///  Změní stav objektů Payment pomocí uživatele a stavu který je potřeba
+        /// </summary>
         public static async Task<bool> ChangePaymentIsPending(Payment PaymentToChange, bool ToChange)
         {
             string request = urlAddress + $"?action=update&type=PayBuddy_payments&id_user={PaymentToChange.Id}&is_pending={ToChange}";
@@ -336,7 +361,9 @@ namespace ClassLibrary
             }
             return false;
         }
-       
+        /// <summary>  
+        ///  Vytváří v databázy záznam pomocí objektu Payment
+        /// </summary>
         public static async Task<bool> CreatePayment(Payment PaymentToAdd) ////////////// nwm jestli tam chceš dátt jednotlivé data + uživatele nebo celou platbu, když tak napiš//////////////////////////////////////
         {
             
