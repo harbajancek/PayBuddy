@@ -91,15 +91,15 @@
             <!-- ///// Actions \\\\\ -->
             <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
                 <StackPanel>
-                    <Border Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
+                    <Button Click="RecievedPayments_ButtonClick" Background="Transparent" Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
                         <Image Source="/images/logout.png"/>
-                    </Border>
-                    <Border Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
+                    </Button>
+                    <Button Click="OutgoingPayments_ButtonClick" Background="Transparent" Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
                         <Image Source="/images/logout.png"/>
-                    </Border>
-                    <Border Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
+                    </Button>
+                    <Button Click="AddPaymentView_ButtonClick" Background="Transparent" Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
                         <Image Source="/images/logout.png"/>
-                    </Border>
+                    </Button>
                     <Border Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
                         <Image Source="/images/logout.png"/>
                     </Border>
@@ -109,8 +109,38 @@
                 </StackPanel>
             </Border>
             <!-- /////\\\\\ -->
+            <!-- ///// Add payment \\\\\ -->
+            <Border x:Name="AddPaymentView" Visibility="Hidden" Grid.Column="1" BorderThickness="1" BorderBrush="Black" Padding="10">
+                <ScrollViewer>
+                    <StackPanel>
+                        <Grid HorizontalAlignment="Stretch">
+                            <Label Content="Create new payment" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Bold" FontSize="17"/>
+                            <Button Click="AddPayment_ButtonClick" Content="Create" HorizontalAlignment="Right" FontWeight="SemiBold" Padding="5" FontSize="15" Margin="5"/>
+                        </Grid>
+                        <Separator/>
+                        <Label Content="Title:"/>
+                        <TextBox Name="Title"/>
+                        <Label Content="Description"/>
+                        <TextBox Name="Description" MinHeight="50"/>
+                        <Label Content="Amount"/>
+                        <TextBox PreviewTextInput="Amount_PreviewTextInput" Name="Amount" MinWidth="100" HorizontalAlignment="Left"/>
+                        <Label Content="Select friends to send the payment for"/>
+                        <ListBox Name="FriendsSelect" SelectionMode="Multiple">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Nick}"/>
+                                        <TextBlock Text="{Binding Email}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+            <!-- /////\\\\\ -->
             <!-- ///// Payments \\\\\ -->
-            <Border Grid.Column="1" BorderThickness="1" BorderBrush="Black">
+            <Border x:Name="PaymentsView" Visibility="Visible" Grid.Column="1" BorderThickness="1" BorderBrush="Black" Padding="10">
                 <ScrollViewer>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -118,7 +148,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Label Grid.Row="0" Content="Payments" FontWeight="Bold" FontSize="17"/>
-                        <ItemsControl Grid.Row="1" Name="Payments">
+                        <ItemsControl Grid.Row="1" Name="RecievedPayments">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border BorderBrush="Black" BorderThickness="1">
@@ -138,9 +168,86 @@
                                             <Label Grid.Column="2" Grid.Row="0" Content="{Binding Amount}" HorizontalAlignment="Right"/>
                                             <TextBlock Padding="7" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Text="{Binding Description}" TextWrapping="Wrap"/>
                                             <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                                <Button Margin="0 0 5 0" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" Content="no" Height="auto" Width="50" BorderBrush="Red" Background="Red"/>
-                                                <Button Margin="0 0 5 0" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" Content="yes" Height="auto" Width="50" BorderBrush="LimeGreen" Background="LimeGreen"/>
+                                                <Button Click="SendDone_ButtonClick" Margin="0 0 5 0" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" Content="Done" Height="auto" Width="50" BorderBrush="LimeGreen" Background="LimeGreen">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsPending}" Value="true">
+                                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                                <Label Content="Pending..."  Margin="0 0 5 0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                    <Label.Style>
+                                                        <Style TargetType="Label">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsPending}" Value="false">
+                                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Label.Style>
+                                                </Label>
                                             </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <ItemsControl Grid.Row="1" Name="OutgoingPayments">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Black" BorderThickness="1">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsPaid}" Value="true">
+                                                        <Setter Property="Visibility" Value="Hidden"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="25"/>
+                                                <RowDefinition MinHeight="50"/>
+                                                <RowDefinition Height="40"/>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Title}"/>
+                                            <Label Grid.Column="1" Grid.Row="0" Content="{Binding Master.Nick}" HorizontalAlignment="Center"/>
+                                            <Label Grid.Column="2" Grid.Row="0" Content="{Binding Amount}" HorizontalAlignment="Right"/>
+                                            <TextBlock Padding="7" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Text="{Binding Description}" TextWrapping="Wrap"/>
+                                            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <StackPanel.Style>
+                                                    <Style TargetType="StackPanel">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsPending}" Value="false">
+                                                                <Setter Property="Visibility" Value="Hidden"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </StackPanel.Style>
+                                                <Button Click="RejectPayment_ButtonClick" Margin="0 0 5 0" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" Content="Reject" Height="auto" Width="50" BorderBrush="Red" Background="Red"/>
+                                                <Button Click="ApprovePayment_ButtonClick" Margin="0 0 5 0" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" Content="Approve" Height="auto" Width="50" BorderBrush="LimeGreen" Background="LimeGreen"/>
+                                            </StackPanel>
+                                            <Label Content="Pending..." Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Right">
+                                                <Label.Style>
+                                                    <Style TargetType="Label">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsPending}" Value="true">
+                                                                <Setter Property="Visibility" Value="Hidden"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Label.Style>
+                                            </Label>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
@@ -151,7 +258,7 @@
             </Border>
             <!-- /////\\\\\ -->
             <!-- ///// Friends \\\\\ -->
-            <Border Grid.Column="2" BorderThickness="1" BorderBrush="Black">
+            <Border Grid.Column="2" BorderThickness="1" BorderBrush="Black" Padding="10">
                 <ScrollViewer>
                     <StackPanel>
                         <Label Content="Friends" FontWeight="Bold" FontSize="17"/>

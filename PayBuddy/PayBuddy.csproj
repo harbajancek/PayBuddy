@@ -59,8 +59,6 @@
     <Compile Include="FriendsModelView.cs" />
     <Compile Include="IncomingPaymentModelView.cs" />
     <Compile Include="OutgoingPaymentModelView.cs" />
-    <Compile Include="TestPayClass.cs" />
-    <Compile Include="TestUserClass.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -108,9 +106,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="images\logout.png">
+    <Resource Include="images\logout.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

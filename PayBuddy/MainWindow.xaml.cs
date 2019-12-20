@@ -21,6 +21,7 @@ namespace PayBuddy
     /// </summary>
     public partial class MainWindow : Window
     {
+        private object LoadDataLock { get; set; } = new object();
         FriendsModelView FriendsModelView { get; set; } = new FriendsModelView();
         OutgoingPaymentModelView OutgoingPaymentModelView { get; set; } = new OutgoingPaymentModelView();
         IncomingPaymentModelView IncomingPaymentModelView { get; set; } = new IncomingPaymentModelView();
@@ -28,77 +29,13 @@ namespace PayBuddy
 
         public MainWindow()
         {
-
-            //var user = new TestUserClass()
-            //{
-            //    Nick = "Tom"
-            //};
-            //List<TestPayClass> testPays = new List<TestPayClass>()
-            //{
-            //    new TestPayClass()
-            //    {
-            //        Master = user,
-            //        Title = "title",
-            //        Amount = 100,
-            //        Description = "descdesc"
-            //    },
-            //    new TestPayClass()
-            //    {
-            //        Master = user,
-            //        Title = "title",
-            //        Amount = 100,
-            //        Description = "descdesc"
-            //    },
-            //    new TestPayClass()
-            //    {
-            //        Master = user,
-            //        Title = "title",
-            //        Amount = 100,
-            //        Description = "descdesc"
-            //    },
-            //    new TestPayClass()
-            //    {
-            //        Master = user,
-            //        Title = "title",
-            //        Amount = 100,
-            //        Description = "descdesc"
-            //    },
-            //    new TestPayClass()
-            //    {
-            //        Master = user,
-            //        Title = "title",
-            //        Amount = 100,
-            //        Description = "descdesc"
-            //    },
-            //};
-            //List<TestUserClass> testUsers = new List<TestUserClass>()
-            //{
-            //    new TestUserClass()
-            //    {
-            //        Nick = "pepa"
-            //    },
-            //    new TestUserClass()
-            //    {
-            //        Nick = "pepa"
-            //    },
-            //    new TestUserClass()
-            //    {
-            //        Nick = "pepa"
-            //    },
-            //    new TestUserClass()
-            //    {
-            //        Nick = "pepa"
-            //    },
-            //    new TestUserClass()
-            //    {
-            //        Nick = "pepa"
-            //    },
-            //};
-
             InitializeComponent();
 
             Friends.ItemsSource = FriendsModelView.Friends;
-            //Payments.ItemsSource = testPays;
+            FriendsSelect.ItemsSource = FriendsModelView.Friends;
+            RecievedPayments.ItemsSource = IncomingPaymentModelView.IncomingPayments;
+            RecievedPayments.Visibility = Visibility.Visible;
+            OutgoingPayments.Visibility = Visibility.Hidden;
         }
 
         private async void Register_ClickButton(object sender, RoutedEventArgs e)
@@ -161,17 +98,17 @@ namespace PayBuddy
 
         private async Task LoadData()
         {
-            foreach (User user in await DataHandle.GetFriends(LoggedUser.Id))
+            foreach (User user in await DataHandle.GetFriends(LoggedUser))
             {
                 FriendsModelView.Friends.Add(user);
             }
 
-            foreach (Payment payment in await DataHandle.GetOwnedPayments(LoggedUser.Id))
+            foreach (Payment payment in await DataHandle.GetOwnedPayments(LoggedUser))
             {
                 OutgoingPaymentModelView.OutgoingPayments.Add(payment);
             }
 
-            foreach (Payment payment in await DataHandle.GetRecievedPayments(LoggedUser.Id))
+            foreach (Payment payment in await DataHandle.GetRecievedPayments(LoggedUser))
             {
                 IncomingPaymentModelView.IncomingPayments.Add(payment);
             }
@@ -213,6 +150,84 @@ namespace PayBuddy
                 return;
             }
             await DataHandle.AddFriends(LoggedUser, friend);
+            await ReloadData();
+        }
+
+        private async void RecievedPayments_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            AddPaymentView.Visibility = Visibility.Hidden;
+            PaymentsView.Visibility = Visibility.Visible;
+            RecievedPayments.Visibility = Visibility.Hidden;
+            OutgoingPayments.Visibility = Visibility.Hidden;
+
+            await ReloadData();
+
+            RecievedPayments.ItemsSource = IncomingPaymentModelView.IncomingPayments;
+            RecievedPayments.Visibility = Visibility.Visible;
+        }
+
+        private async void OutgoingPayments_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            AddPaymentView.Visibility = Visibility.Hidden;
+            PaymentsView.Visibility = Visibility.Visible;
+            RecievedPayments.Visibility = Visibility.Hidden;
+            OutgoingPayments.Visibility = Visibility.Hidden;
+
+            await ReloadData();
+
+            OutgoingPayments.ItemsSource = OutgoingPaymentModelView.OutgoingPayments;
+            OutgoingPayments.Visibility = Visibility.Visible;
+        }
+
+        private void AddPaymentView_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            AddPaymentView.Visibility = Visibility.Visible;
+            PaymentsView.Visibility = Visibility.Hidden;
+        }
+
+        private void Amount_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            foreach (var item in e.Text)
+            {
+                if (!char.IsDigit(item))
+                {
+                    e.Handled = true;
+                    break;
+                }
+            }
+        }
+
+        private async void AddPayment_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in FriendsSelect.SelectedItems)
+            {
+                User friend = (User)item;
+                Payment payment = new Payment(0, LoggedUser, friend, Title.Text, Description.Text, int.Parse(Amount.Text), false, false);
+                await DataHandle.CreatePayment(payment);
+            }
+        }
+
+        private async void SendDone_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            await DataHandle.ChangePaymentIsPending((Payment)((Button)sender).DataContext, true);
+
+            await ReloadData();
+        }
+
+        private async void ApprovePayment_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            var payment = (Payment)((Button)sender).DataContext;
+            await DataHandle.ChangePaymentIsPaid(payment, true);
+            await DataHandle.ChangePaymentIsPending(payment, false);
+
+            await ReloadData();
+        }
+
+        private async void RejectPayment_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            var payment = (Payment)((Button)sender).DataContext;
+            await DataHandle.ChangePaymentIsPending(payment, false);
+
             await ReloadData();
         }
     }
