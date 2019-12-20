@@ -19,17 +19,15 @@ namespace ClassLibrary
         public static async Task<User> GetUserByID(int id)
         {
             string request = urlAddress + $"?action=show&type=PayBuddy_user&id={id}";
-            string response = await RequestApi(request);
-
 
             HttpResponseMessage Response = await client.GetAsync(request);
             string text = await Response.Content.ReadAsStringAsync();
-            text = text.Substring(2);
+            
 
 
             if (Response.StatusCode == HttpStatusCode.OK)
             {
-
+                text = text.Substring(2);
                 var array = JsonConvert.DeserializeObject<List<PayBuddy_user>>(text);
                 if (array.Count == 0)
                 {
@@ -50,17 +48,15 @@ namespace ClassLibrary
         public static async Task<User> GetUserByEmail(string email)
         {
             string request = urlAddress + $"?action=show&type=PayBuddy_user&email={email}";
-            string response = await RequestApi(request);
-
-
+        
             HttpResponseMessage Response = await client.GetAsync(request);
             string text = await Response.Content.ReadAsStringAsync();
-            text = text.Substring(2);
+            
 
 
             if (Response.StatusCode == HttpStatusCode.OK)
             {
-
+                text = text.Substring(2);
                 var array = JsonConvert.DeserializeObject<List<PayBuddy_user>>(text);
                 if (array.Count == 0)
                 {
@@ -86,12 +82,12 @@ namespace ClassLibrary
 
             HttpResponseMessage Response = await client.GetAsync(request);
             string text = await Response.Content.ReadAsStringAsync();
-            text = text.Substring(2);
+            
 
 
             if (Response.StatusCode == HttpStatusCode.OK)
             {
-
+                text = text.Substring(2);
                 var array = JsonConvert.DeserializeObject<List<PayBuddy_user>>(text);
                 if (array.Count == 0)
                 {
@@ -157,7 +153,7 @@ namespace ClassLibrary
             int userId = user.Id;
 
             string request = urlAddress + $"?action=show&type=PayBuddy_friends&id{id_position}={userId}";
-            string response = await RequestApi(request);
+            
 
             HttpResponseMessage Response = await client.GetAsync(request);
             string text = await Response.Content.ReadAsStringAsync();
@@ -294,7 +290,6 @@ namespace ClassLibrary
         /// <summary>  
         ///  Získává list objektů Payment které zadaný objekt User dluží
         /// </summary>  
-
         public static async Task<List<Payment>> GetRecievedPayments(User user_owner) //vše co má zaplatit
         {
             string request = urlAddress + $"?action=show&type=PayBuddy_payments&id_user={user_owner.Id}";
@@ -320,13 +315,12 @@ namespace ClassLibrary
             }
             return null;
         }
-
         /// <summary>  
         ///  Změní stav objektů Payment pomocí uživatele a stavu který je potřeba
         /// </summary>  
         public static async Task<bool> ChangePaymentIsPaid(Payment PaymentToChange, bool ToChange) //změnit paid
         {
-            string request = urlAddress + $"?action=update&type=PayBuddy_payments&id_user={PaymentToChange.Id}&is_paid={ToChange}";
+            string request = urlAddress + $"?action=update&type=PayBuddy_payments&id={PaymentToChange.Id}&is_paid={ToChange}";
             
 
             HttpResponseMessage Response = await client.GetAsync(request); //vkládá do api data
@@ -341,13 +335,12 @@ namespace ClassLibrary
             return false;
 
         }
-
         /// <summary>  
         ///  Změní stav objektů Payment pomocí uživatele a stavu který je potřeba
         /// </summary>
         public static async Task<bool> ChangePaymentIsPending(Payment PaymentToChange, bool ToChange)
         {
-            string request = urlAddress + $"?action=update&type=PayBuddy_payments&id_user={PaymentToChange.Id}&is_pending={ToChange}";
+            string request = urlAddress + $"?action=update&type=PayBuddy_payments&id={PaymentToChange.Id}&is_pending={ToChange}";
 
 
             HttpResponseMessage Response = await client.GetAsync(request);
