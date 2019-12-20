@@ -172,23 +172,23 @@ namespace ClassLibrary
 
                 List<User> users = new List<User>();
 
-                foreach (PayBuddy_friends friend in array)
+                foreach (PayBuddy_friends friend in array)//vkládá všechny uživatele
                 {
                     
                     if(id_position == 1)
                     {
-                        users.Add(await GetUserByID(int.Parse(friend.id2)));
+                        users.Add(await GetUserByID(int.Parse(friend.id2))); //kontroluje 1 pozici
                         
                     }
                     else
                     {
-                        users.Add(await GetUserByID(int.Parse(friend.id1)));
+                        users.Add(await GetUserByID(int.Parse(friend.id1))); // kontroluje 2 pozici
                     }
                     
                 }
                 if (id_position == 1)
                 {
-                    users.AddRange(await GetFriends(user, 2));
+                    users.AddRange(await GetFriends(user, 2));//spojení prvního a druhého místa
                     return users;
 
 
