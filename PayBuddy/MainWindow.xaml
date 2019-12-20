@@ -92,17 +92,14 @@
             <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
                 <StackPanel>
                     <Button Click="RecievedPayments_ButtonClick" Background="Transparent" Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
-                        <Image Source="/images/logout.png"/>
+                        <Image Source="/images/receive.png"/>
                     </Button>
                     <Button Click="OutgoingPayments_ButtonClick" Background="Transparent" Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
-                        <Image Source="/images/logout.png"/>
+                        <Image Source="/images/outgoing.png"/>
                     </Button>
                     <Button Click="AddPaymentView_ButtonClick" Background="Transparent" Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
-                        <Image Source="/images/logout.png"/>
+                        <Image Source="/images/add.png"/>
                     </Button>
-                    <Border Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
-                        <Image Source="/images/logout.png"/>
-                    </Border>
                     <Button Click="Logout_ClickButton" Background="Transparent" Padding="5" BorderBrush="Black" BorderThickness="1" Margin="5" Width="60" Height="60">
                         <Image Source="/images/logout.png"/>
                     </Button>
@@ -147,7 +144,7 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Content="Payments" FontWeight="Bold" FontSize="17"/>
+                        <Label x:Name="PaymentsLabel" Grid.Row="0" Content="Payments" FontWeight="Bold" FontSize="17"/>
                         <ItemsControl Grid.Row="1" Name="RecievedPayments">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>

@@ -159,6 +159,7 @@ namespace PayBuddy
             PaymentsView.Visibility = Visibility.Visible;
             RecievedPayments.Visibility = Visibility.Hidden;
             OutgoingPayments.Visibility = Visibility.Hidden;
+            PaymentsLabel.Content = "Received Payments";
 
             await ReloadData();
 
@@ -172,6 +173,7 @@ namespace PayBuddy
             PaymentsView.Visibility = Visibility.Visible;
             RecievedPayments.Visibility = Visibility.Hidden;
             OutgoingPayments.Visibility = Visibility.Hidden;
+            PaymentsLabel.Content = "Outgoing Payments";
 
             await ReloadData();
 
@@ -205,6 +207,16 @@ namespace PayBuddy
                 Payment payment = new Payment(0, LoggedUser, friend, Title.Text, Description.Text, int.Parse(Amount.Text), false, false);
                 await DataHandle.CreatePayment(payment);
             }
+
+            AddPaymentView.Visibility = Visibility.Hidden;
+            PaymentsView.Visibility = Visibility.Visible;
+            RecievedPayments.Visibility = Visibility.Hidden;
+            OutgoingPayments.Visibility = Visibility.Hidden;
+
+            await ReloadData();
+
+            OutgoingPayments.ItemsSource = OutgoingPaymentModelView.OutgoingPayments;
+            OutgoingPayments.Visibility = Visibility.Visible;
         }
 
         private async void SendDone_ButtonClick(object sender, RoutedEventArgs e)
