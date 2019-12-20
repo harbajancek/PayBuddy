@@ -341,7 +341,7 @@ namespace ClassLibrary
         {
             
 
-            string request = urlAddress + $"?action=insert&type=PayBuddy_payments&id_master={PaymentToAdd.Master}&title={PaymentToAdd.Title}&descr={PaymentToAdd.Description}&amount={PaymentToAdd.Amount}&id_user={PaymentToAdd.Payer}&is_paid={PaymentToAdd.IsPaid}&is_pending={PaymentToAdd.IsPending}";
+            string request = urlAddress + $"?action=insert&type=PayBuddy_payments&id_master={PaymentToAdd.Master.Id}&title={PaymentToAdd.Title}&descr={PaymentToAdd.Description}&amount={PaymentToAdd.Amount}&id_user={PaymentToAdd.Payer.Id}&is_paid={PaymentToAdd.IsPaid}&is_pending={PaymentToAdd.IsPending}";
 
 
             HttpResponseMessage Response = await client.GetAsync(request);
