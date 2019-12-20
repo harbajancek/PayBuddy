@@ -264,16 +264,16 @@ namespace ClassLibrary
         public static async Task<List<Payment>> GetOwnedPayments(User user_owner) //vše co zadal někomu jinemu
         {
             string request = urlAddress + $"?action=show&type=PayBuddy_payments&id_master={user_owner.Id}";//dotaz pro api
-            string response = await RequestApi(request);
+            
 
             HttpResponseMessage Response = await client.GetAsync(request);
             string text = await Response.Content.ReadAsStringAsync(); // získává text z webu
-            text = text.Substring(2);//zbavuje se nechtěných znaků
+            
 
 
             if (Response.StatusCode == HttpStatusCode.OK)//kontroluje jesti byl dotaz zadán správně
             {
-
+                text = text.Substring(2);//zbavuje se nechtěných znaků
                 var array = JsonConvert.DeserializeObject<List<PayBuddy_payments>>(text); //převádní json na objekt
 
                 List<Payment> Payments = new List<Payment>();
@@ -293,16 +293,16 @@ namespace ClassLibrary
         public static async Task<List<Payment>> GetRecievedPayments(User user_owner) //vše co má zaplatit
         {
             string request = urlAddress + $"?action=show&type=PayBuddy_payments&id_user={user_owner.Id}";
-            string response = await RequestApi(request);
+
 
             HttpResponseMessage Response = await client.GetAsync(request);
             string text = await Response.Content.ReadAsStringAsync();
-            text = text.Substring(2);
+           
 
 
             if (Response.StatusCode == HttpStatusCode.OK)
             {
-
+                text = text.Substring(2);
                 var array = JsonConvert.DeserializeObject<List<PayBuddy_payments>>(text);
 
                 List<Payment> Payments = new List<Payment>();
@@ -379,12 +379,7 @@ namespace ClassLibrary
             
         }
 
-        private static async Task<string> RequestApi(string uriRequest)
-        {
-            HttpResponseMessage response = await client.GetAsync(uriRequest);
-
-            return await response.Content.ReadAsStringAsync();
-        }
+        
         
     }
 }
