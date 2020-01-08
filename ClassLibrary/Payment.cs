@@ -8,7 +8,7 @@ namespace ClassLibrary
 {
     public class Payment
     {
-        public Payment(int id, User master, User payer, string title, string description, int amount, bool isPending, bool isPaid)
+        public Payment(int id, User master, User payer, string title, string description, string amount, bool isPending, bool isPaid)
         {
             Id = id;
             Master = master;
@@ -24,7 +24,7 @@ namespace ClassLibrary
         public User Payer { get; }
         public string Title { get; }
         public string Description { get; }
-        public int Amount { get; }
+        public string Amount { get; }
         public bool IsPending { get; }
         public bool IsPaid { get; }
     }

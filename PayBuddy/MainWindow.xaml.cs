@@ -209,7 +209,7 @@ namespace PayBuddy
             foreach (var item in FriendsSelect.SelectedItems)
             {
                 User friend = (User)item;
-                Payment payment = new Payment(0, LoggedUser, friend, Title.Text, Description.Text, int.Parse(Amount.Text), false, false);
+                Payment payment = new Payment(0, LoggedUser, friend, Title.Text, Description.Text, Amount.Text, false, false);
                 await DataHandle.CreatePayment(payment);
             }
 

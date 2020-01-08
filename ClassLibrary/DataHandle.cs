@@ -280,7 +280,7 @@ namespace ClassLibrary
 
                 foreach (PayBuddy_payments payment in array) // převádí objekty databáze do objektů které se používají
                 {
-                    Payments.Add(new Payment(id: int.Parse(payment.id), master: await GetUserByID(int.Parse(payment.id_master)), payer: await GetUserByID(int.Parse(payment.id_user)), title: payment.title, description: payment.descr, amount: int.Parse(payment.amount), isPending: bool.Parse(payment.is_pending), isPaid: bool.Parse(payment.is_paid)));
+                    Payments.Add(new Payment(id: int.Parse(payment.id), master: await GetUserByID(int.Parse(payment.id_master)), payer: await GetUserByID(int.Parse(payment.id_user)), title: payment.title, description: payment.descr, amount: payment.amount, isPending: bool.Parse(payment.is_pending), isPaid: bool.Parse(payment.is_paid)));
                 }
                 return Payments; 
             }
@@ -309,7 +309,7 @@ namespace ClassLibrary
 
                 foreach (PayBuddy_payments payment in array)
                 {
-                    Payments.Add(new Payment(id: int.Parse(payment.id), master: await GetUserByID(int.Parse(payment.id_master)), payer: await GetUserByID(int.Parse(payment.id_user)), title: payment.title, description: payment.descr, amount: int.Parse(payment.amount), isPending: bool.Parse(payment.is_pending), isPaid: bool.Parse(payment.is_paid)));
+                    Payments.Add(new Payment(id: int.Parse(payment.id), master: await GetUserByID(int.Parse(payment.id_master)), payer: await GetUserByID(int.Parse(payment.id_user)), title: payment.title, description: payment.descr, amount: payment.amount, isPending: bool.Parse(payment.is_pending), isPaid: bool.Parse(payment.is_paid)));
                 }
                 return Payments;
             }
